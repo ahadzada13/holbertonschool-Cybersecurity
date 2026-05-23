@@ -1,2 +1,2 @@
 #!/bin/bash
-mask=""; bits=$1; for i in {1..4}; do if [ $bits -ge 8 ]; then mask+="${mask:+.}$((255))"; bits=$((bits-8)); else m=$(( 256 - (2 ** (8 - bits)) )); mask+="${mask:+.}$m"; bits=0; fi; done; echo "$mask"
+val=$(( 0xffffffff ^ (1 << (32 - $1)) - 1 )); printf "%d.%d.%d.%d\n" "$(( (val >> 24) & 255 ))" "$(( (val >> 16) & 255 ))" "$(( (val >> 8) & 255 ))" "$(( val & 255 ))"
