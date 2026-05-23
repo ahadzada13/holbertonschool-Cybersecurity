@@ -1,0 +1,2 @@
+#!/bin/bash
+IFS='.' read -r -a ip <<< "$1"; m=""; for i in {1..4}; do n=$(( $2 - (i-1)*8 )); [ $n -ge 8 ] && m+="255." || { [ $n -le 0 ] && m+="0." || m+="$(( 256 - 2**(8-n) ))."; }; done; IFS='.' read -r -a mk <<< "${m%.*}"; net=(); bcst=(); for i in {0..3}; do net+=("$(( ${ip[i]} & ${mk[i]} ))"); bcst+=("$(( ${ip[i]} | (255 - ${mk[i]}) ))"); done; printf "%d.%d.%d.%d - %d.%d.%d.%d" "${net[0]}" "${net[1]}" "${net[2]}" "$(( ${net[3]} + 1 ))" "${bcst[0]}" "${bcst[1]}" "${bcst[2]}" "$(( ${bcst[3]} - 1 ))"
